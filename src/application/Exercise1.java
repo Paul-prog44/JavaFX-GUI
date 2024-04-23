@@ -1,6 +1,8 @@
 package application;
 
 
+import java.util.Arrays;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -17,9 +19,31 @@ public class Exercise1 extends Application {
 		HBox hbox = new HBox();
 		TextArea textfield = new TextArea();
 		
-		hbox.getChildren().add(new Label("Letters: 0"));
-		hbox.getChildren().add(new Label("Words: 0"));
-		hbox.getChildren().add(new Label("The longest word is:"));
+		Label labelWords = new Label();
+		Label numberOfCharacters = new Label();
+		Label longestWord = new Label();
+		
+		textfield.textProperty()
+			.addListener((change, oldValue, newValue) -> {
+				int characters = newValue.length();
+				String[] parts = newValue.split(" ");
+				int words = parts.length;
+				String longest = Arrays.stream(parts)
+						.sorted((s1, s2) -> s2.length() - s1.length())
+						.findFirst()
+						.get();
+				
+				numberOfCharacters.setText("Characters: "+ characters);
+				labelWords.setText("Words: "+ words);
+				longestWord.setText("The longest word is: " + longest);
+				
+			});
+		
+		hbox.setSpacing(10);
+		
+		hbox.getChildren().add(numberOfCharacters);
+		hbox.getChildren().add(labelWords);
+		hbox.getChildren().add(longestWord);
 
 				
 		layout.setCenter(textfield);
