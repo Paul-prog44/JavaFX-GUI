@@ -21,7 +21,7 @@ public class Main extends Application {
 		Button buttonComponent = new Button("This is a button");
 		RadioButton rb1 = new RadioButton("Hello");
 		TextField text = new TextField("New text");
-		rb1.setText("Hello");
+		
 		
 		FlowPane componentGroup = new FlowPane();
 		componentGroup.getChildren().add(textComponent);
