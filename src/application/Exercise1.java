@@ -22,6 +22,9 @@ public class Exercise1 extends Application {
 		Label labelWords = new Label();
 		Label numberOfCharacters = new Label();
 		Label longestWord = new Label();
+		numberOfCharacters.setText("Characters: ");
+		labelWords.setText("Words: ");
+		longestWord.setText("The longest word is: ");
 		
 		textfield.textProperty()
 			.addListener((change, oldValue, newValue) -> {
