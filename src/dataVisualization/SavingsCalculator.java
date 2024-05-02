@@ -1,9 +1,12 @@
 package dataVisualization;
 
+import java.text.DecimalFormat;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
@@ -23,13 +26,38 @@ public class SavingsCalculator extends Application {
 		
 		Label currentValueSavings = new Label(""+ savingSlider.getValue());
 		Label currentInterestRate = new Label(""+ interestSlider.getValue());
-		
+			    
+	  //X and y axis
+		NumberAxis xAxis = new NumberAxis(0, 30, 2);
+	  	NumberAxis yAxis = new NumberAxis();
+	  		
+	  	LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+	  	lineChart.setTitle("Savings Calculator");
+	  		
 		savingSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+			lineChart.getData().clear();
+			XYChart.Series savingsChart = new XYChart.Series();
 			currentValueSavings.setText(""+newValue.intValue());
+			for (int i = 0; i <31; i++) {
+				savingsChart.getData().add(new XYChart.Data(i, i*newValue.intValue()*12));
+			}
+			
+			lineChart.getData().add(savingsChart);
 		});
 		
+		
 		interestSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-			currentInterestRate.setText(""+ newValue.intValue());
+			//Formatage du double à 2 chiffre après la virgule
+			DecimalFormat df = new DecimalFormat("#.##");
+			String formattedValue = df.format(newValue);
+			currentInterestRate.setText(formattedValue);
+			
+			lineChart.getData().clear();
+			XYChart.Series savingsChart = new XYChart.Series();
+			for (int i = 0; i <31; i++) {
+				savingsChart.getData().add(new XYChart.Data(i, savingSlider.getValue()*Math.pow((1.0 + newValue.doubleValue()/100), i)));
+			}
+			lineChart.getData().add(savingsChart);
 		});
 
 		
@@ -62,12 +90,7 @@ public class SavingsCalculator extends Application {
 
 	
 		
-		//X and y axis
-		NumberAxis xAxis = new NumberAxis(0, 30, 2);
-		NumberAxis yAxis = new NumberAxis();
-		
-		LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-		lineChart.setTitle("Savings Calculator");
+
 		
 		layout.setCenter(lineChart);
 		layout.setTop(vbox);
