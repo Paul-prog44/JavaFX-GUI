@@ -31,4 +31,14 @@ public class Ship {
 		this.character.setTranslateX(this.character.getTranslateX()+ this.movement.getX());
 		this.character.setTranslateY(this.character.getTranslateY()+ this.movement.getY());
 	}
+	
+	public void accelerate() {
+		double changeX = Math.cos(Math.toRadians(this.character.getRotate()));
+		double changeY = Math.sin(Math.toRadians(this.character.getRotate()));
+		
+		changeX *= 0.05;
+		changeY *= 0.05;
+		
+		this.movement = this.movement.add(changeX, changeY);
+	}
 }
