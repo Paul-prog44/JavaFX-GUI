@@ -1,6 +1,5 @@
 package asteroidGame;
 
-import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 
 public class Ship extends Character{

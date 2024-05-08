@@ -1,15 +1,16 @@
 package asteroidGame;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
 public class AsteroidsApplication extends Application {
@@ -20,15 +21,16 @@ public class AsteroidsApplication extends Application {
 		pane.setPrefSize(600, 400);
 		
 		Ship ship = new Ship(150, 100);
-		Asteroid asteroid = new Asteroid(50, 50);
+		List<Asteroid> asteroids = new ArrayList<>();
+		
+		for (int i=0; i<5 ; i++) {
+			Random rnd = new Random();
+			Asteroid asteroid = new Asteroid(rnd.nextInt(100), rnd.nextInt(100));
+			asteroids.add(asteroid);
+		}
 		
 		pane.getChildren().add(ship.getCharacter());
-		pane.getChildren().add(asteroid.getCharacter());
-		
-		asteroid.turnRight();
-		asteroid.turnRight();
-		asteroid.accelerate();
-		asteroid.accelerate();
+		asteroids.forEach(asteroid -> pane.getChildren().add(asteroid.getCharacter()));		
 		
 		Scene scene = new Scene(pane);
 		
@@ -42,7 +44,6 @@ public class AsteroidsApplication extends Application {
 			pressedKeys.put(event.getCode(), Boolean.FALSE);
 		});
 		
-		Point2D movement = new Point2D(1, 0);
 		
 		new AnimationTimer() {
 			@Override
@@ -60,7 +61,14 @@ public class AsteroidsApplication extends Application {
 				}
 				
 				ship.move();
-				asteroid.move();
+				asteroids.forEach(asteroid-> asteroid.move());
+				
+				asteroids.forEach(asteroid -> {
+					if (ship.collide(asteroid)) {
+						stop();
+					}
+				});
+				
 			}
 		}.start();
 		
