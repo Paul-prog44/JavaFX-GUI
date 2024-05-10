@@ -31,6 +31,22 @@ public abstract class Character {
 	public void move() {
 		this.character.setTranslateX(this.character.getTranslateX() + this.movement.getX());
 		this.character.setTranslateY(this.character.getTranslateY() + this.movement.getY());
+		
+		if (this.character.getTranslateX() < 0) {
+	        this.character.setTranslateX(this.character.getTranslateX() + AsteroidsApplication.WIDTH);
+	    }
+
+	    if (this.character.getTranslateX() > AsteroidsApplication.WIDTH) {
+	        this.character.setTranslateX(this.character.getTranslateX() % AsteroidsApplication.WIDTH);
+	    }
+
+	    if (this.character.getTranslateY() < 0) {
+	        this.character.setTranslateY(this.character.getTranslateY() + AsteroidsApplication.HEIGHT);
+	    }
+
+	    if (this.character.getTranslateY() > AsteroidsApplication.HEIGHT) {
+	        this.character.setTranslateY(this.character.getTranslateY() % AsteroidsApplication.HEIGHT);
+	    }
 	}
 	
 	public void accelerate() {
@@ -46,5 +62,13 @@ public abstract class Character {
 	public boolean collide(Character other) {
 		Shape collisionArea = Shape.intersect(this.character,  other.getCharacter());
 		return collisionArea.getBoundsInLocal().getWidth() != -1;
+	}
+	
+	public Point2D getMovement() {
+		return this.movement;
+	}
+	
+	public void setMovement(Point2D movement) {
+		this.movement = movement;
 	}
 }
