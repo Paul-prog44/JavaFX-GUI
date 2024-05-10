@@ -7,6 +7,7 @@ import javafx.scene.shape.Shape;
 public abstract class Character {
 	private Polygon character;
 	private Point2D movement;
+	private boolean alive;
 	
 	public Character(Polygon polygon, int x, int y) {
 		this.character = polygon;
@@ -70,5 +71,13 @@ public abstract class Character {
 	
 	public void setMovement(Point2D movement) {
 		this.movement = movement;
+	}
+	
+	public void setAlive(boolean state) {
+		this.alive = state;
+	}
+	
+	public boolean isAlive() {
+		return this.alive;
 	}
 }

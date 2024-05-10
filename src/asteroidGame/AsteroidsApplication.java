@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import javafx.animation.AnimationTimer;
@@ -12,17 +13,23 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class AsteroidsApplication extends Application {
 	
-	public static int WIDTH = 300;
-	public static int HEIGHT = 200;
+	public static int WIDTH = 600;
+	public static int HEIGHT = 300;
 	
 	@Override
 	public void start(Stage stage) throws Exception {
 		Pane pane = new Pane();
 		pane.setPrefSize(WIDTH, HEIGHT);
+		Text text = new Text(10, 20, "Points: 0");
+	    pane.getChildren().add(text);
+	    
+	    AtomicInteger points = new AtomicInteger();
+
 		
 		Ship ship = new Ship(WIDTH/2, HEIGHT/2);
 		List<Asteroid> asteroids = new ArrayList<>();
@@ -48,6 +55,7 @@ public class AsteroidsApplication extends Application {
 		scene.setOnKeyReleased(event -> {
 			pressedKeys.put(event.getCode(), Boolean.FALSE);
 		});
+		
 		
 		
 		new AnimationTimer() {
@@ -76,6 +84,8 @@ public class AsteroidsApplication extends Application {
 					pane.getChildren().add(projectile.getCharacter());
 				}
 				
+				
+				
 				projectiles.forEach(projectile -> {
 				    List<Asteroid> collisions = asteroids.stream()
 				                                                .filter(asteroid -> asteroid.collide(projectile))
@@ -86,6 +96,9 @@ public class AsteroidsApplication extends Application {
 				        pane.getChildren().remove(collided.getCharacter());
 				    });
 				});
+				
+				text.setText("Points: " + points.incrementAndGet());
+				
 				
 				ship.move();
 				asteroids.forEach(asteroid-> asteroid.move());
